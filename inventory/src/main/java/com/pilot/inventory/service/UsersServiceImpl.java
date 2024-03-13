@@ -8,10 +8,12 @@ import com.pilot.inventory.model.entity.Product;
 import com.pilot.inventory.model.entity.Users;
 import com.pilot.inventory.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class UsersServiceImpl implements UsersService{
     @Autowired
     private UsersRepository usersRepository;

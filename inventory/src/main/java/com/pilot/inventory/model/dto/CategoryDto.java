@@ -1,7 +1,7 @@
 package com.pilot.inventory.model.dto;
 
 public class CategoryDto {
-    public String name;
+    private String name;
 
     public CategoryDto(String name) {
         this.name = name;

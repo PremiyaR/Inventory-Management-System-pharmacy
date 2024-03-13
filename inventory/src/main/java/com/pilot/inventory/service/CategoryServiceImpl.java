@@ -34,10 +34,21 @@ public class CategoryServiceImpl implements CategoryService{
         Categories existingCategory = categoryRepository.findById(updatedCategory.getId())
                 .orElseThrow(() -> new ItemAlreadyExistsException());
 
-        if(existingCategory.getId()==updatedCategory.getId())
-        {
+        if (!existingCategory.getName().equals(updatedCategory.getName())) {
+            Categories existingByName = categoryRepository.findByNameAndDeletedFalse(updatedCategory.getName());
+            if (existingByName != null) {
+                throw new ItemAlreadyExistsException("Category with name " + updatedCategory.getName() + " already exists");
+            }
+        }
+
+        if (existingCategory.isDeleted()) {
+            throw new NoEntriesFound("Category is soft deleted");
+        }
+
+        if(existingCategory.getName().equals((updatedCategory.getName()))){
             throw new EntryAlreadyExists();
         }
+
         existingCategory.setName(updatedCategory.getName());
         return categoryRepository.save(existingCategory);
     }
@@ -61,7 +72,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public List<Categories> displayAllCategories() {
-        List<Categories> categories=categoryRepository.findByDeletedFalse();
+        List<Categories> categories=categoryRepository.findAll();
         if(categories.isEmpty()){
             throw new NoEntriesFound();
         }

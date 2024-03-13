@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ItemAlreadyExistsException.class)
     public ResponseEntity<Object> handleCategoryNotFoundException (ItemAlreadyExistsException e)
     {
-        String errorMessage="Item already exists in same ID";
+        String errorMessage="Item already exists in same/different ID";
         return new ResponseEntity<>(errorMessage,HttpStatus.NOT_FOUND);
     }
 

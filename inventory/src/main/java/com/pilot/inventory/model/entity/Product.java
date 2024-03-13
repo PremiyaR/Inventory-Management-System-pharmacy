@@ -20,9 +20,6 @@ public class Product {
 
     private String name;
 
-    @Transient
-    private CategoryDto categoryDto;
-
     @ManyToOne
     @JoinColumn(nullable = false,name = "category_id")
     private Categories categories;
@@ -39,6 +36,8 @@ public class Product {
     @FutureOrPresent(message = "Expiry date must be in the present or future")
     private LocalDate expiryDate;
 
+    private boolean deleted;
+
     public int getId() {
         return id;
     }
@@ -53,14 +52,6 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public CategoryDto getCategoryDto() {
-        return categoryDto;
-    }
-
-    public void setCategoryDto(CategoryDto categoryDto) {
-        this.categoryDto = categoryDto;
     }
 
     public Categories getCategories() {
@@ -95,16 +86,24 @@ public class Product {
         this.expiryDate = expiryDate;
     }
 
-    public Product(int id, String name, CategoryDto categoryDto, Categories categories, int quantity, double unitPrice, LocalDate expiryDate) {
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public Product() {
+    }
+
+    public Product(int id, String name,  Categories categories, int quantity, double unitPrice, LocalDate expiryDate, boolean deleted) {
         this.id = id;
         this.name = name;
-        this.categoryDto = categoryDto;
         this.categories = categories;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
         this.expiryDate = expiryDate;
-    }
-
-    public Product() {
+        this.deleted = deleted;
     }
 }
