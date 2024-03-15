@@ -1,9 +1,7 @@
 package com.pilot.inventory.controller;
 
-import com.pilot.inventory.model.entity.Categories;
 import com.pilot.inventory.model.entity.Orders;
 import com.pilot.inventory.service.OrdersService;
-import org.hibernate.query.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

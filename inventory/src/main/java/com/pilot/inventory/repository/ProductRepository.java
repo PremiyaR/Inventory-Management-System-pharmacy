@@ -13,4 +13,5 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
     public Product findByName(String name);
     List<Product> findByDeletedFalse();
     Optional<Product> findByIdAndDeletedFalse(int id);
+    Product findByNameAndDeletedFalse(String name);
 }

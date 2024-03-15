@@ -11,8 +11,6 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Categories,Integer> {
     Categories findByName(String name);
-
     List<Categories> findByDeletedFalse();
-    Optional<Categories> findByIdAndDeletedFalse(int id);
     Categories findByNameAndDeletedFalse(String name);
 }

@@ -13,13 +13,12 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @ManyToOne
-    @JoinColumn(name="user_id",nullable = false)
+    @JoinColumn(name="user_id", nullable = false)
     private Users users;
 
     @ManyToOne
-    @JoinColumn(name="product_id", nullable = false)
+    @JoinColumn(name="product_id",nullable = false)
     private Product product;
 
     @Min(value= 1,message="Quantity must be atleast 1")
@@ -31,6 +30,21 @@ public class Orders {
 
     @Column(name = "order_time")
     private LocalDateTime orderTime;
+
+    private boolean deleted;
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    @PrePersist
+    protected void onCreate(){
+        orderTime=LocalDateTime.now();
+    }
 
     public int getId() {
         return id;
@@ -80,13 +94,14 @@ public class Orders {
         this.orderTime = orderTime;
     }
 
-    public Orders(int id, Users users, Product product, int quantity, double totalPrice, LocalDateTime orderTime) {
+    public Orders(int id, Users users, Product product, int quantity, double totalPrice, LocalDateTime orderTime, boolean deleted) {
         this.id = id;
         this.users = users;
         this.product = product;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
         this.orderTime = orderTime;
+        this.deleted = deleted;
     }
 
     public Orders() {

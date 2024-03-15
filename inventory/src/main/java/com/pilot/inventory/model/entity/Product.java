@@ -17,13 +17,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
     private String name;
 
     @ManyToOne
-    @JoinColumn(nullable = false,name = "category_id")
+    @JoinColumn(name = "category_id")
     private Categories categories;
-
 
     @PositiveOrZero(message = "It can be only zero or positive")
     private int quantity;

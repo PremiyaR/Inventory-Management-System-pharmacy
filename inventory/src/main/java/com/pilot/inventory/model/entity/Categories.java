@@ -2,7 +2,7 @@ package com.pilot.inventory.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+
 
 
 @Entity
@@ -10,7 +10,6 @@ import lombok.Data;
 public class Categories {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //not auto-generated
     private int id;
 
     @NotBlank(message = "Name cannot be blank")

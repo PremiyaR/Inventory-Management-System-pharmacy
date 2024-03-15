@@ -3,9 +3,6 @@ package com.pilot.inventory.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
-import lombok.Data;
-import lombok.Generated;
-
 
 @Entity
 public class Users {
@@ -18,7 +15,9 @@ public class Users {
 
     @Column(name = "contact_number", unique = true)
     @Positive(message = "Contact Number must be positive")
-    private int contactNumber;
+    private long contactNumber;
+
+    private boolean deleted;
 
     public int getId() {
         return id;
@@ -36,20 +35,28 @@ public class Users {
         this.name = name;
     }
 
-    public int getContactNumber() {
+    public long getContactNumber() {
         return contactNumber;
     }
 
-    public void setContactNumber(int contactNumber) {
+    public void setContactNumber(long contactNumber) {
         this.contactNumber = contactNumber;
     }
 
-    public Users(int id, String name, int contactNumber) {
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public Users(int id, String name, long contactNumber, boolean deleted) {
         this.id = id;
         this.name = name;
         this.contactNumber = contactNumber;
+        this.deleted = deleted;
     }
-
     public Users() {
     }
 }

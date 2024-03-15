@@ -1,9 +1,8 @@
 package com.pilot.inventory.service;
 
-
-import com.pilot.inventory.exception.ItemAlreadyExistsException;
 import com.pilot.inventory.exception.DuplicateName;
 import com.pilot.inventory.exception.EntryAlreadyExists;
+import com.pilot.inventory.exception.ItemAlreadyExistsException;
 import com.pilot.inventory.exception.NoEntriesFound;
 import com.pilot.inventory.model.entity.Categories;
 import com.pilot.inventory.repository.CategoryRepository;
@@ -14,18 +13,18 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
+
     @Override
     public Categories addCategory(Categories categories) {
-       Categories existingCategories= categoryRepository.findByName(categories.getName());
+        Categories existingCategories = categoryRepository.findByName(categories.getName());
 
-       if(existingCategories!=null)
-       {
-           throw new DuplicateName();
-       }
-       return categoryRepository.save(categories);
+        if (existingCategories != null) {
+            throw new DuplicateName();
+        }
+        return categoryRepository.save(categories);
 
     }
 
@@ -45,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService{
             throw new NoEntriesFound("Category is soft deleted");
         }
 
-        if(existingCategory.getName().equals((updatedCategory.getName()))){
+        if (existingCategory.getName().equals((updatedCategory.getName()))) {
             throw new EntryAlreadyExists();
         }
 
@@ -56,15 +55,13 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public String deleteCategory(int id) {
 
-        Optional<Categories> optional=categoryRepository.findById(id);
-        if(optional.isPresent())
-        {
-            Categories categories=optional.get();
+        Optional<Categories> optional = categoryRepository.findById(id);
+        if (optional.isPresent()) {
+            Categories categories = optional.get();
             categories.setDeleted(true);
             categoryRepository.save(categories);
             return "Category deleted";
-        }
-        else {
+        } else {
             return "Category Not Found";
         }
 
@@ -72,8 +69,8 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public List<Categories> displayAllCategories() {
-        List<Categories> categories=categoryRepository.findAll();
-        if(categories.isEmpty()){
+        List<Categories> categories = categoryRepository.findAll();
+        if (categories.isEmpty()) {
             throw new NoEntriesFound();
         }
         return categories;
@@ -81,8 +78,8 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public List<Categories> findAllActiveCategories() {
-        List<Categories> categoriesList= categoryRepository.findByDeletedFalse();
-        if(categoriesList.isEmpty()){
+        List<Categories> categoriesList = categoryRepository.findByDeletedFalse();
+        if (categoriesList.isEmpty()) {
             throw new NoEntriesFound();
         }
         return categoriesList;
