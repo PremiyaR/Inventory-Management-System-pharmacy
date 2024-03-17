@@ -1,6 +1,7 @@
 package com.pilot.inventory.controller;
 
-import com.pilot.inventory.model.entity.Users;
+import com.pilot.inventory.dto.UsersDto;
+import com.pilot.inventory.model.Users;
 import com.pilot.inventory.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,9 +38,9 @@ public class UsersController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Users>> displayAllUsers()
+    public ResponseEntity<List<UsersDto>> displayAllUsers()
     {
-        List<Users> users=usersService.displayAllUsers();
+        List<UsersDto> users=usersService.displayAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }

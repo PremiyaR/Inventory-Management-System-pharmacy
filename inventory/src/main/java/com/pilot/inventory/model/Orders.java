@@ -1,9 +1,8 @@
-package com.pilot.inventory.model.entity;
+package com.pilot.inventory.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 
 import java.time.LocalDateTime;
 

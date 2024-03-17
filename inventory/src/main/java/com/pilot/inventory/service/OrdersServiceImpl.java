@@ -1,10 +1,12 @@
 package com.pilot.inventory.service;
 
+import com.pilot.inventory.dto.OrdersDto;
 import com.pilot.inventory.exception.InsufficientQuantityException;
 import com.pilot.inventory.exception.NoEntriesFound;
-import com.pilot.inventory.model.entity.Orders;
-import com.pilot.inventory.model.entity.Product;
-import com.pilot.inventory.model.entity.Users;
+import com.pilot.inventory.mapper.ProductDtoMapper;
+import com.pilot.inventory.mapper.UsersDtoMapper;
+import com.pilot.inventory.model.Orders;
+import com.pilot.inventory.model.Product;
 import com.pilot.inventory.repository.OrdersRepository;
 import com.pilot.inventory.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +14,25 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrdersServiceImpl implements OrdersService{
+    private final UsersDtoMapper usersDtoMapper;
+    private final ProductDtoMapper productDtoMapper;
+
     @Autowired
     private ProductService productService;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
     private OrdersRepository ordersRepository;
+
+    public OrdersServiceImpl(UsersDtoMapper usersDtoMapper, ProductDtoMapper productDtoMapper) {
+        this.usersDtoMapper = usersDtoMapper;
+        this.productDtoMapper = productDtoMapper;
+    }
+
     @Override
     public Orders addOrders(Orders orders) {
         Product product = orders.getProduct();
@@ -59,8 +71,16 @@ public class OrdersServiceImpl implements OrdersService{
     }
 
     @Override
-    public List<Orders> displayAllOrders() {
-        List<Orders> ordersList=ordersRepository.findByDeletedFalse();
+    public List<OrdersDto> displayAllOrders() {
+        List<OrdersDto> ordersList=ordersRepository.findByDeletedFalse()
+                .stream()
+                .map(orders->new OrdersDto(
+                        usersDtoMapper.apply(orders.getUsers()),
+                        productDtoMapper.apply(orders.getProduct()),
+                        orders.getQuantity(),
+                        orders.getTotalPrice(),
+                        orders.getOrderTime()))
+                .collect(Collectors.toList());;
         if(ordersList.isEmpty()){
             throw new NoEntriesFound();
         }

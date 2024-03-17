@@ -1,6 +1,7 @@
 package com.pilot.inventory.controller;
 
-import com.pilot.inventory.model.entity.Categories;
+import com.pilot.inventory.dto.CategoryDto;
+import com.pilot.inventory.model.Categories;
 import com.pilot.inventory.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,9 +37,9 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Categories>> displayAllCategories()
+    public ResponseEntity<List<CategoryDto>> displayAllCategories()
     {
-        List<Categories> categories=categoryService.findAllActiveCategories();
+        List<CategoryDto> categories=categoryService.findAllActiveCategories();
         return new ResponseEntity<>(categories,HttpStatus.OK);
     }
 }

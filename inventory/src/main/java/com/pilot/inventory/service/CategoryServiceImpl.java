@@ -4,13 +4,15 @@ import com.pilot.inventory.exception.DuplicateName;
 import com.pilot.inventory.exception.EntryAlreadyExists;
 import com.pilot.inventory.exception.ItemAlreadyExistsException;
 import com.pilot.inventory.exception.NoEntriesFound;
-import com.pilot.inventory.model.entity.Categories;
+import com.pilot.inventory.dto.CategoryDto;
+import com.pilot.inventory.model.Categories;
 import com.pilot.inventory.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -68,17 +70,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Categories> displayAllCategories() {
-        List<Categories> categories = categoryRepository.findAll();
-        if (categories.isEmpty()) {
-            throw new NoEntriesFound();
-        }
-        return categories;
-    }
-
-    @Override
-    public List<Categories> findAllActiveCategories() {
-        List<Categories> categoriesList = categoryRepository.findByDeletedFalse();
+    public List<CategoryDto> findAllActiveCategories() {
+        List<CategoryDto> categoriesList = categoryRepository.findByDeletedFalse()
+                .stream()
+                .map(category->new CategoryDto(category.getName()))
+                .collect(Collectors.toList());
         if (categoriesList.isEmpty()) {
             throw new NoEntriesFound();
         }

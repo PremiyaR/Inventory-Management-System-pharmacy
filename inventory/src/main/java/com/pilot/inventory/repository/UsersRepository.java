@@ -1,6 +1,6 @@
 package com.pilot.inventory.repository;
 
-import com.pilot.inventory.model.entity.Users;
+import com.pilot.inventory.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

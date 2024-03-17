@@ -1,21 +1,28 @@
 package com.pilot.inventory.service;
 
+import com.pilot.inventory.dto.CategoryDto;
+import com.pilot.inventory.dto.ProductDto;
 import com.pilot.inventory.exception.DuplicateName;
 import com.pilot.inventory.exception.EntryAlreadyExists;
 import com.pilot.inventory.exception.ItemAlreadyExistsException;
 import com.pilot.inventory.exception.NoEntriesFound;
-import com.pilot.inventory.model.entity.Orders;
-import com.pilot.inventory.model.entity.Product;
-import com.pilot.inventory.model.entity.Users;
+import com.pilot.inventory.mapper.CategoryDtoMapper;
+import com.pilot.inventory.model.Product;
 import com.pilot.inventory.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
+    private final CategoryDtoMapper categoryDtoMapper;
+
+    public ProductServiceImpl(CategoryDtoMapper categoryDtoMapper) {
+        this.categoryDtoMapper = categoryDtoMapper;
+    }
     @Autowired
     private ProductRepository productRepository;
     @Override
@@ -68,8 +75,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAllActiveProducts() {
-        List<Product> productList=productRepository.findByDeletedFalse();
+    public List<ProductDto> findAllActiveProducts() {
+        List<ProductDto> productList=productRepository.findByDeletedFalse()
+                .stream()
+                .map(product->new ProductDto(product.getName(),
+                        categoryDtoMapper.apply(product.getCategories()),
+                        product.getQuantity(),
+                        product.getUnitPrice(),
+                        product.getExpiryDate()))
+                .collect(Collectors.toList());
         if(productList.isEmpty()){
             throw new NoEntriesFound();
         }

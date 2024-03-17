@@ -1,4 +1,4 @@
-package com.pilot.inventory.model.entity;
+package com.pilot.inventory.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

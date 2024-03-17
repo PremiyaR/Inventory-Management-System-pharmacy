@@ -1,6 +1,7 @@
 package com.pilot.inventory.controller;
 
-import com.pilot.inventory.model.entity.Product;
+import com.pilot.inventory.dto.ProductDto;
+import com.pilot.inventory.model.Product;
 import com.pilot.inventory.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,9 +38,9 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> displayAllProducts()
+    public ResponseEntity<List<ProductDto>> displayAllProducts()
     {
-        List<Product> product=productService.findAllActiveProducts();
+        List<ProductDto> product=productService.findAllActiveProducts();
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 }

@@ -1,12 +1,10 @@
-package com.pilot.inventory.model.entity;
+package com.pilot.inventory.model;
 
-import com.pilot.inventory.model.dto.CategoryDto;
-import com.pilot.inventory.model.entity.Categories;
+import com.pilot.inventory.dto.CategoryDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.Data;
 
 import java.time.LocalDate;
 
@@ -95,7 +93,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(int id, String name,  Categories categories, int quantity, double unitPrice, LocalDate expiryDate, boolean deleted) {
+    public Product(int id, String name, Categories categories, int quantity, double unitPrice, LocalDate expiryDate, boolean deleted) {
         this.id = id;
         this.name = name;
         this.categories = categories;

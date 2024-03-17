@@ -1,18 +1,19 @@
 package com.pilot.inventory.service;
 
+import com.pilot.inventory.dto.CategoryDto;
+import com.pilot.inventory.dto.UsersDto;
 import com.pilot.inventory.exception.DuplicateName;
 import com.pilot.inventory.exception.EntryAlreadyExists;
 import com.pilot.inventory.exception.ItemAlreadyExistsException;
 import com.pilot.inventory.exception.NoEntriesFound;
-import com.pilot.inventory.model.entity.Categories;
-import com.pilot.inventory.model.entity.Product;
-import com.pilot.inventory.model.entity.Users;
+import com.pilot.inventory.model.Users;
 import com.pilot.inventory.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UsersServiceImpl implements UsersService{
@@ -67,8 +68,13 @@ public class UsersServiceImpl implements UsersService{
     }
 
     @Override
-    public List<Users> displayAllUsers() {
-        List<Users> usersList=usersRepository.findByDeletedFalse();
+    public List<UsersDto> displayAllUsers() {
+        List<UsersDto> usersList=usersRepository.findByDeletedFalse()
+                .stream()
+                .map(users->new UsersDto(
+                        users.getName(),
+                        users.getContactNumber()))
+                .collect(Collectors.toList());
         if(usersList.isEmpty()){
             throw new NoEntriesFound();
         }
