@@ -1,10 +1,9 @@
 package com.pilot.inventory.dto;
 
-import com.pilot.inventory.model.Categories;
-
 import java.time.LocalDate;
 
 public record ProductDto(
+        int id,
         String name,
         CategoryDto categoryDto,
         int quantity,

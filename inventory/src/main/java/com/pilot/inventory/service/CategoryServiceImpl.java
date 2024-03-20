@@ -6,6 +6,7 @@ import com.pilot.inventory.exception.ItemAlreadyExistsException;
 import com.pilot.inventory.exception.NoEntriesFound;
 import com.pilot.inventory.dto.CategoryDto;
 import com.pilot.inventory.model.Categories;
+import com.pilot.inventory.model.Product;
 import com.pilot.inventory.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,22 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Categories updateCategory(Categories updatedCategory) {
         Categories existingCategory = categoryRepository.findById(updatedCategory.getId())
-                .orElseThrow(() -> new ItemAlreadyExistsException());
-
-        if (!existingCategory.getName().equals(updatedCategory.getName())) {
-            Categories existingByName = categoryRepository.findByNameAndDeletedFalse(updatedCategory.getName());
-            if (existingByName != null) {
-                throw new ItemAlreadyExistsException("Category with name " + updatedCategory.getName() + " already exists");
-            }
-        }
-
-        if (existingCategory.isDeleted()) {
-            throw new NoEntriesFound("Category is soft deleted");
-        }
-
-        if (existingCategory.getName().equals((updatedCategory.getName()))) {
-            throw new EntryAlreadyExists();
-        }
+                .orElseThrow(() -> new NoEntriesFound("Category not found"));
 
         existingCategory.setName(updatedCategory.getName());
         return categoryRepository.save(existingCategory);
@@ -73,7 +59,9 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryDto> findAllActiveCategories() {
         List<CategoryDto> categoriesList = categoryRepository.findByDeletedFalse()
                 .stream()
-                .map(category->new CategoryDto(category.getName()))
+                .map(category->new CategoryDto(
+                        category.getId(),
+                        category.getName()))
                 .collect(Collectors.toList());
         if (categoriesList.isEmpty()) {
             throw new NoEntriesFound();

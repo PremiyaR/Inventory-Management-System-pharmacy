@@ -11,6 +11,7 @@ public class CategoryDtoMapper implements Function<Categories, CategoryDto> {
     @Override
     public CategoryDto apply(Categories categories) {
         return new CategoryDto(
+                categories.getId(),
                 categories.getName()
         );
     }

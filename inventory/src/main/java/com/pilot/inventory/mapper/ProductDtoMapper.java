@@ -14,6 +14,7 @@ public class ProductDtoMapper implements Function<Product, ProductDto> {
     @Override
     public ProductDto apply(Product product) {
         return new ProductDto(
+                product.getId(),
                 product.getName(),
                 categoryDtoMapper.apply(product.getCategories()),
                 product.getQuantity(),

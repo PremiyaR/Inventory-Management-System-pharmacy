@@ -1,7 +1,12 @@
 package com.pilot.inventory.model;
 
-import com.pilot.inventory.dto.CategoryDto;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -29,7 +34,7 @@ public class Product {
     private double unitPrice;
 
     @Column(name = "expiry_date")
-    @FutureOrPresent(message = "Expiry date must be in the present or future")
+//    @FutureOrPresent(message = "Expiry date must be in the present or future")
     private LocalDate expiryDate;
 
     private boolean deleted;

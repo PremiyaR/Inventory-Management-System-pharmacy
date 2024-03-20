@@ -1,10 +1,7 @@
 package com.pilot.inventory.service;
 
-import com.pilot.inventory.dto.CategoryDto;
 import com.pilot.inventory.dto.ProductDto;
 import com.pilot.inventory.exception.DuplicateName;
-import com.pilot.inventory.exception.EntryAlreadyExists;
-import com.pilot.inventory.exception.ItemAlreadyExistsException;
 import com.pilot.inventory.exception.NoEntriesFound;
 import com.pilot.inventory.mapper.CategoryDtoMapper;
 import com.pilot.inventory.model.Product;
@@ -39,27 +36,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(Product updatedProduct) {
-        Product existingProducts = productRepository.findById(updatedProduct.getId())
-                .orElseThrow(() -> new ItemAlreadyExistsException());
+        Product existingProduct = productRepository.findById(updatedProduct.getId())
+                .orElseThrow(() -> new NoEntriesFound("Product not found"));
 
-        if (!existingProducts.getName().equals(updatedProduct.getName())) {
-            Product existingByName = productRepository.findByNameAndDeletedFalse(updatedProduct.getName());
-            if (existingByName != null) {
-                throw new ItemAlreadyExistsException("Product with name " + updatedProduct.getName() + " already exists");
-            }
-        }
-
-        if (existingProducts.isDeleted()) {
-            throw new NoEntriesFound("Product is deleted");
-        }
-
-        if (existingProducts.getName().equals((updatedProduct.getName()))) {
-            throw new EntryAlreadyExists();
-        }
-
-        existingProducts.setName(updatedProduct.getName());
-        return productRepository.save(existingProducts);
+        existingProduct.setName(updatedProduct.getName());
+        existingProduct.setQuantity(updatedProduct.getQuantity());
+        existingProduct.setUnitPrice(updatedProduct.getUnitPrice());
+        existingProduct.setExpiryDate(updatedProduct.getExpiryDate());
+        existingProduct.setCategories(updatedProduct.getCategories());
+        return productRepository.save(existingProduct);
     }
+
 
     @Override
     public String deleteProduct(int id) {
@@ -78,7 +65,9 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> findAllActiveProducts() {
         List<ProductDto> productList=productRepository.findByDeletedFalse()
                 .stream()
-                .map(product->new ProductDto(product.getName(),
+                .map(product->new ProductDto(
+                        product.getId(),
+                        product.getName(),
                         categoryDtoMapper.apply(product.getCategories()),
                         product.getQuantity(),
                         product.getUnitPrice(),

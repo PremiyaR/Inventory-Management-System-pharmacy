@@ -37,14 +37,13 @@ public class OrdersServiceImpl implements OrdersService{
     public Orders addOrders(Orders orders) {
         Product product = orders.getProduct();
         int orderedQuantity = orders.getQuantity();
-
         Product existingProduct = productRepository.findById(product.getId())
                 .orElseThrow(() -> new NoEntriesFound("Product not found"));
 
         int remainingQuantity = existingProduct.getQuantity() - orderedQuantity;
 
         if (remainingQuantity <= 0) {
-            throw new InsufficientQuantityException("Insufficient quantity available for product: " + existingProduct.getName());
+            throw new InsufficientQuantityException();
         }
 
         existingProduct.setQuantity(remainingQuantity);

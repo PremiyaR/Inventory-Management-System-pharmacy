@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -30,7 +31,7 @@ public class ProductController {
         return new ResponseEntity<>("Update successful",HttpStatus.OK);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable int id)
     {
         productService.deleteProduct(id);

@@ -1,6 +1,5 @@
 package com.pilot.inventory.service;
 
-import com.pilot.inventory.dto.CategoryDto;
 import com.pilot.inventory.dto.UsersDto;
 import com.pilot.inventory.exception.DuplicateName;
 import com.pilot.inventory.exception.EntryAlreadyExists;
