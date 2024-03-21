@@ -3,6 +3,7 @@ package com.pilot.inventory.controller;
 import com.pilot.inventory.dto.CategoryDto;
 import com.pilot.inventory.model.Categories;
 import com.pilot.inventory.service.CategoryService;
+import com.pilot.inventory.util.EndPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +19,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
-@RequestMapping("/categories")
+@RequestMapping(EndPoint.CATEGORY)
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;

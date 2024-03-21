@@ -34,7 +34,7 @@ public class Product {
     private double unitPrice;
 
     @Column(name = "expiry_date")
-//    @FutureOrPresent(message = "Expiry date must be in the present or future")
+    @FutureOrPresent(message = "Expiry date must be in the present or future")
     private LocalDate expiryDate;
 
     private boolean deleted;

@@ -1,12 +1,9 @@
 package com.pilot.inventory.service;
 
 import com.pilot.inventory.exception.DuplicateName;
-import com.pilot.inventory.exception.EntryAlreadyExists;
-import com.pilot.inventory.exception.ItemAlreadyExistsException;
 import com.pilot.inventory.exception.NoEntriesFound;
 import com.pilot.inventory.dto.CategoryDto;
 import com.pilot.inventory.model.Categories;
-import com.pilot.inventory.model.Product;
 import com.pilot.inventory.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
