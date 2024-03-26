@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntryAlreadyExists.class)
     public ResponseEntity<Object> handleEntryAlreadyExistsException(EntryAlreadyExists e){
-        String errorMessage="No changes applied as the updated category is the same as before";
+        String errorMessage="No changes applied as the updated item is the same as before";
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
@@ -35,5 +35,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorMessage,HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(InsufficientQuantityException.class)
+    public ResponseEntity<Object> handleInsufficientQuantityException (InsufficientQuantityException e)
+    {
+        String errorMessage="There is no sufficient quantity to place an order";
+        return new ResponseEntity<>(errorMessage, HttpStatus.OK);
+    }
 
 }
