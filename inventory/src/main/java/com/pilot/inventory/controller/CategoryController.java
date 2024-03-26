@@ -1,6 +1,7 @@
 package com.pilot.inventory.controller;
 
 import com.pilot.inventory.dto.CategoryDto;
+import com.pilot.inventory.dto.CategoryRequestDto;
 import com.pilot.inventory.model.Categories;
 import com.pilot.inventory.service.CategoryService;
 import com.pilot.inventory.util.EndPoint;
@@ -26,9 +27,9 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<String> addCategory(@RequestBody Categories categories)
+    public ResponseEntity<String> addCategory(@RequestBody CategoryRequestDto categoryRequestDto)
     {
-        Categories savedCategories=categoryService.addCategory(categories);
+        Categories savedCategories=categoryService.addCategory(categoryRequestDto);
         return new ResponseEntity<>("Created successfully", HttpStatus.CREATED);
     }
 

@@ -1,6 +1,7 @@
 package com.pilot.inventory.controller;
 
 import com.pilot.inventory.dto.OrdersDto;
+import com.pilot.inventory.dto.OrdersRequestDto;
 import com.pilot.inventory.model.Orders;
 import com.pilot.inventory.service.OrdersService;
 import com.pilot.inventory.util.EndPoint;
@@ -24,9 +25,9 @@ public class OrdersController {
     @Autowired
     private OrdersService ordersService;
     @PostMapping
-    public ResponseEntity<String> addOrders(@RequestBody Orders orders)
+    public ResponseEntity<String> addOrders(@RequestBody OrdersRequestDto ordersRequestDto)
     {
-        Orders savedOrders=ordersService.addOrders(orders);
+        Orders savedOrders=ordersService.addOrders(ordersRequestDto);
         return new ResponseEntity<>("Created successfully", HttpStatus.CREATED);
     }
 

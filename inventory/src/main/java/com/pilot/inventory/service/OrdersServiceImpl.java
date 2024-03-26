@@ -1,10 +1,14 @@
 package com.pilot.inventory.service;
 
 import com.pilot.inventory.dto.OrdersDto;
+import com.pilot.inventory.dto.OrdersRequestDto;
 import com.pilot.inventory.exception.InsufficientQuantityException;
 import com.pilot.inventory.exception.NoEntriesFound;
-import com.pilot.inventory.mapper.ProductDtoMapper;
 import com.pilot.inventory.mapper.UsersDtoMapper;
+import com.pilot.inventory.mapper.ProductDtoMapper;
+import com.pilot.inventory.mapper.OrdersRequestDtoMapper;
+import com.pilot.inventory.mapper.ProductOrderDtoMapper;
+import com.pilot.inventory.mapper.UsersRequestDtoMapper;
 import com.pilot.inventory.model.Orders;
 import com.pilot.inventory.model.Product;
 import com.pilot.inventory.repository.OrdersRepository;
@@ -20,6 +24,9 @@ import java.util.stream.Collectors;
 public class OrdersServiceImpl implements OrdersService{
     private final UsersDtoMapper usersDtoMapper;
     private final ProductDtoMapper productDtoMapper;
+    private final OrdersRequestDtoMapper ordersRequestDtoMapper;
+    private final ProductOrderDtoMapper productOrderDtoMapper;
+    private final UsersRequestDtoMapper usersRequestDtoMapper;
 
     @Autowired
     private ProductService productService;
@@ -28,17 +35,21 @@ public class OrdersServiceImpl implements OrdersService{
     @Autowired
     private OrdersRepository ordersRepository;
 
-    public OrdersServiceImpl(UsersDtoMapper usersDtoMapper, ProductDtoMapper productDtoMapper) {
+
+    public OrdersServiceImpl(UsersDtoMapper usersDtoMapper, ProductDtoMapper productDtoMapper, OrdersRequestDtoMapper ordersRequestDtoMapper, ProductOrderDtoMapper productOrderDtoMapper, UsersRequestDtoMapper usersRequestDtoMapper) {
         this.usersDtoMapper = usersDtoMapper;
         this.productDtoMapper = productDtoMapper;
+        this.ordersRequestDtoMapper = ordersRequestDtoMapper;
+        this.productOrderDtoMapper = productOrderDtoMapper;
+        this.usersRequestDtoMapper = usersRequestDtoMapper;
     }
 
     @Override
-    public Orders addOrders(Orders orders) {
-        Product product = orders.getProduct();
-        int orderedQuantity = orders.getQuantity();
-        Product existingProduct = productRepository.findById(product.getId())
-                .orElseThrow(() -> new NoEntriesFound("Product not found"));
+    public Orders addOrders(OrdersRequestDto ordersRequestDto) {
+        Product product = productOrderDtoMapper.apply(ordersRequestDto.productOrderDto());
+        int orderedQuantity = ordersRequestDto.quantity();
+
+        Product existingProduct = productRepository.findByNameAndDeletedFalse(product.getName());
 
         int remainingQuantity = existingProduct.getQuantity() - orderedQuantity;
 
@@ -49,6 +60,13 @@ public class OrdersServiceImpl implements OrdersService{
         existingProduct.setQuantity(remainingQuantity);
         productService.deleteProductIfQuantityZero(existingProduct);
         productRepository.save(existingProduct);
+
+        Orders orders=new Orders();
+        orders.setUsers(usersRequestDtoMapper.apply(ordersRequestDto.usersRequestDto()));
+        orders.setProduct(product);
+        orders.setOrderTime(ordersRequestDto.orderTime());
+        orders.setQuantity(ordersRequestDto.quantity());
+        orders.setTotalPrice(ordersRequestDto.totalPrice());
         return ordersRepository.save(orders);
     }
 

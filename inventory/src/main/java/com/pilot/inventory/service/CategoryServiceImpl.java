@@ -1,5 +1,6 @@
 package com.pilot.inventory.service;
 
+import com.pilot.inventory.dto.CategoryRequestDto;
 import com.pilot.inventory.exception.DuplicateName;
 import com.pilot.inventory.exception.NoEntriesFound;
 import com.pilot.inventory.dto.CategoryDto;
@@ -18,7 +19,10 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
 
     @Override
-    public Categories addCategory(Categories categories) {
+    public Categories addCategory(CategoryRequestDto categoryRequestDto) {
+        Categories categories=new Categories();
+        categories.setName(categoryRequestDto.name());
+
         Categories existingCategories = categoryRepository.findByName(categories.getName());
 
         if (existingCategories != null) {

@@ -1,6 +1,7 @@
 package com.pilot.inventory.controller;
 
 import com.pilot.inventory.dto.ProductDto;
+import com.pilot.inventory.dto.ProductRequestDto;
 import com.pilot.inventory.model.Product;
 import com.pilot.inventory.service.ProductService;
 import com.pilot.inventory.util.EndPoint;
@@ -26,9 +27,9 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
-    public ResponseEntity<String> addProduct(@RequestBody Product product)
+    public ResponseEntity<String> addProduct(@RequestBody ProductRequestDto productRequestDto)
     {
-        productService.addProduct(product);
+        productService.addProduct(productRequestDto);
         return new ResponseEntity<>("Added successfully",HttpStatus.CREATED);
     }
 

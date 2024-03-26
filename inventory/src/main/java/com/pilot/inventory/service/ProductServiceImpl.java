@@ -1,10 +1,14 @@
 package com.pilot.inventory.service;
 
 import com.pilot.inventory.dto.ProductDto;
+import com.pilot.inventory.dto.ProductRequestDto;
 import com.pilot.inventory.exception.DuplicateName;
 import com.pilot.inventory.exception.NoEntriesFound;
 import com.pilot.inventory.mapper.CategoryDtoMapper;
+import com.pilot.inventory.mapper.CategoryRequestDtoMapper;
+import com.pilot.inventory.model.Categories;
 import com.pilot.inventory.model.Product;
+import com.pilot.inventory.repository.CategoryRepository;
 import com.pilot.inventory.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,17 +20,30 @@ import java.util.stream.Collectors;
 @Service
 public class ProductServiceImpl implements ProductService {
     private final CategoryDtoMapper categoryDtoMapper;
-
-    public ProductServiceImpl(CategoryDtoMapper categoryDtoMapper) {
-        this.categoryDtoMapper = categoryDtoMapper;
-    }
+    private final CategoryRequestDtoMapper categoryRequestDtoMapper;
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    public ProductServiceImpl(CategoryDtoMapper categoryDtoMapper, CategoryRequestDtoMapper categoryRequestDtoMapper) {
+        this.categoryDtoMapper = categoryDtoMapper;
+        this.categoryRequestDtoMapper = categoryRequestDtoMapper;
+    }
     @Override
-    public Product addProduct(Product product) {
+    public Product addProduct(ProductRequestDto productRequestDto) {
+        Product product=new Product();
+        product.setName(productRequestDto.name());
+
+        Categories categories = categoryRequestDtoMapper.apply(productRequestDto.categoryRequestDto());
+        product.setCategories(categories);
+
+        product.setQuantity(productRequestDto.quantity());
+        product.setUnitPrice(productRequestDto.unitPrice());
+        product.setExpiryDate(productRequestDto.expiryDate());
 
         Product existingProducts= productRepository.findByName(product.getName());
-
         if(existingProducts!=null)
         {
             throw new DuplicateName();
