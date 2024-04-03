@@ -1,8 +1,12 @@
-package com.pilot.inventory.model.entity;
+package com.pilot.inventory.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+
 
 
 @Entity
@@ -10,7 +14,6 @@ import lombok.Data;
 public class Categories {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //not auto-generated
     private int id;
 
     @NotBlank(message = "Name cannot be blank")

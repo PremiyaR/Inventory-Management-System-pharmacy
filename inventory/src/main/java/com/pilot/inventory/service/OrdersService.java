@@ -1,12 +1,13 @@
 package com.pilot.inventory.service;
 
-import com.pilot.inventory.model.entity.Categories;
-import com.pilot.inventory.model.entity.Orders;
+import com.pilot.inventory.dto.OrdersDto;
+import com.pilot.inventory.dto.OrdersRequestDto;
+import com.pilot.inventory.model.Orders;
 
 import java.util.List;
 
 public interface OrdersService {
-    public Orders addOrders(Orders orders);
+    public Orders addOrders(OrdersRequestDto ordersRequestDto);
     public String deleteOrders(int id);
-    public List<Orders> displayAllOrders();
+    public List<OrdersDto> displayAllOrders();
 }

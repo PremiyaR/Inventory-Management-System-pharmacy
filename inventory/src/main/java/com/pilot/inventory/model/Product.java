@@ -1,12 +1,15 @@
-package com.pilot.inventory.model.entity;
+package com.pilot.inventory.model;
 
-import com.pilot.inventory.model.dto.CategoryDto;
-import com.pilot.inventory.model.entity.Categories;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.Data;
 
 import java.time.LocalDate;
 
@@ -17,13 +20,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
     private String name;
 
     @ManyToOne
-    @JoinColumn(nullable = false,name = "category_id")
+    @JoinColumn(name = "category_id")
     private Categories categories;
-
 
     @PositiveOrZero(message = "It can be only zero or positive")
     private int quantity;
@@ -97,7 +98,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(int id, String name,  Categories categories, int quantity, double unitPrice, LocalDate expiryDate, boolean deleted) {
+    public Product(int id, String name, Categories categories, int quantity, double unitPrice, LocalDate expiryDate, boolean deleted) {
         this.id = id;
         this.name = name;
         this.categories = categories;
